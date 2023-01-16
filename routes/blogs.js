@@ -41,7 +41,7 @@ router.get("/", async(req,res)=>{
 })
 
 //delete a message
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id",authenticate.admin, async(req,res)=>{
     try{
       let blog= await Blog.findById(req.params.id);
       await cloudinary.uploader.destroy(blog.cloudinary_id);
@@ -52,7 +52,7 @@ router.delete("/:id", async(req,res)=>{
         res.send({error:"Postman not found"})
     }
 })
-router.put("/:id",upload.single("image"), async(req,res)=>{
+router.put("/:id",authenticate.admin,upload.single("image"), async(req,res)=>{
   try{
     const id = req.params.id;
     let blog= await Blog.findById(id);
