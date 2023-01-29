@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authenticate from "../middleware/authenticate";
 const UserRouter = express.Router();
-let blacklist = new Set();
 // Configuration
 
 UserRouter.post("/signup", async (req, res) => {

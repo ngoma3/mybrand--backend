@@ -1,13 +1,14 @@
 {
   "name": "capstone-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "build": "babel src -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc --reporter=text --reporter=html --reporter=json-summary mocha --recursive --exit --timeout 40000 --require @babel/register test/*.js",
     "start": "node dist/app.js",
     "server": "npm run build && nodemon --exec babel-node src/app.js",
-    "swagger": "swagger"
+    "swagger": "swagger",
+    "coverage": "nyc --reporter=html --report -dir=coverage/ npm run test"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.0",
     "nodemon": "^2.0.20",
+    "nyc": "^15.1.0",
     "path": "^0.12.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui": "^4.15.5",
@@ -37,8 +39,11 @@
     "@babel/core": "^7.20.12",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5"
+    "eslint-plugin-import": "^2.27.5",
+    "mocha": "^10.2.0"
   }
 }

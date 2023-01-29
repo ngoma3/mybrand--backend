@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import UserRouter from "./routes/users";
 import BlogRouter from "./routes/blogs";
 import MsgRouter from "./routes/msg";
-import UserRouter from "./routes/users";
 import CommentRouter from "./routes/comments";
 import cors from "cors";
 import morgan from "morgan";
@@ -16,7 +16,7 @@ const app = express();
 dotenv.config();
 
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(morgan("dev"));
 mongoose.set('strictQuery', true);
@@ -40,3 +40,5 @@ connect();
 app.listen(3000, () =>{
   console.log(`server started on port 3000`);
 });
+
+module.exports = app;
