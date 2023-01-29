@@ -1,9 +1,12 @@
-const router = require("express").Router();
-const Msg = require("../model/Msg");
+import express from "express";
+import Msg from "../model/Msg";
+import authenticate  from "../middleware/authenticate";
+const MsgRouter = express.Router();
+
 
 // Configuration
 
-router.post("/", async(req,res)=>{
+MsgRouter.post("/",authenticate.authenticate, async(req,res)=>{
   try{
     
     let msg = new Msg({
@@ -20,7 +23,7 @@ router.post("/", async(req,res)=>{
 
 });
 
-router.get("/", async(req,res)=>{
+MsgRouter.get("/",authenticate.admin, async(req,res)=>{
     try{
         const query = await Msg.find()
         res.send(query)
@@ -32,7 +35,7 @@ router.get("/", async(req,res)=>{
 })
 
 //delete a message
-router.delete("/:id", async(req,res)=>{
+MsgRouter.delete("/:id",authenticate.admin, async(req,res)=>{
     try{
       let msg= await Msg.findById(req.params.id);
       await msg.remove();
@@ -42,7 +45,7 @@ router.delete("/:id", async(req,res)=>{
         res.send({error:"Postman not found"})
     }
 })
-router.put("/:id", async(req,res)=>{
+MsgRouter.put("/:id", async(req,res)=>{
   try{
     const id = req.params.id;
     let msg= await Msg.findById(id);
@@ -61,4 +64,4 @@ router.put("/:id", async(req,res)=>{
   }
 
 });
-module.exports = router;
+module.exports =MsgRouter;
