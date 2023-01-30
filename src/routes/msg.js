@@ -14,8 +14,8 @@ MsgRouter.post("/",authenticate.authenticate, async(req,res)=>{
       email: req.body.email,
       content: req.body.content
     })
-    await msg.save();
-    res.json(msg);
+    let newMsg=await msg.save();
+    res.json(newMsg);
 
   }catch(err){
       console.log(err);
@@ -45,23 +45,23 @@ MsgRouter.delete("/:id",authenticate.admin, async(req,res)=>{
         res.send({error:"Postman not found"})
     }
 })
-MsgRouter.put("/:id", async(req,res)=>{
-  try{
-    const id = req.params.id;
-    let msg= await Msg.findById(id);
+// MsgRouter.put("/:id", async(req,res)=>{
+//   try{
+//     const id = req.params.id;
+//     let msg= await Msg.findById(id);
 
-    let  name= req.body.name || msg.name;
-    let  email= req.body.email || msg.email;
-    let  content= req.body.content || msg.content;
+//     let  name= req.body.name || msg.name;
+//     let  email= req.body.email || msg.email;
+//     let  content= req.body.content || msg.content;
 
-    msg=await Msg.findOneAndUpdate({_id: id },{ $set:{ name: name ,email: email ,content: content}}, { new: true});
-    res.json(msg);
+//     msg=await Msg.findOneAndUpdate({_id: id },{ $set:{ name: name ,email: email ,content: content}}, { new: true});
+//     res.json(msg);
     
-  }catch(err){
-        res.status(404)
-        res.send({error:"Postman not found"})
-      console.log(err);
-  }
+//   }catch(err){
+//         res.status(404)
+//         res.send({error:"Postman not found"})
+//       console.log(err);
+//   }
 
-});
+// });
 module.exports =MsgRouter;

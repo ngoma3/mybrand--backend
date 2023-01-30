@@ -15,7 +15,7 @@ CommentRouter.post("/:id", authenticate.authenticate, async (req, res) => {
             user: req.user._id,
             comment: req.body.comment
         });
-        await comment.save();
+        let newComment =await comment.save();
         await Blog.updateOne({
             _id: comment.blog
         }, {
@@ -23,34 +23,22 @@ CommentRouter.post("/:id", authenticate.authenticate, async (req, res) => {
                 comments: comment._id
             }
         })
-        res.send(comment);
+        res.send(newComment);
     } catch (err) {
         console.log(err);
     }
 
 });
-
-CommentRouter.get("/", authenticate.authenticate, async (req, res) => {
-    try {
-        const query = await Comment.find()
-        res.send(query)
-    } catch {
-        res.status(404)
-        res.send({
-            error: "Postman not found"
-        })
-    }
-
-})
-
 //delete a message
 CommentRouter.delete("/:id", authenticate.authenticate, async (req, res) => {
     const id = req.params.id;
     const comment = await Comment.findById(id);
+    const user=req.user._id ;
     const commentor = comment.user;
-    if (req.user._id === commentor) {
+    console.log(user,...commentor);
+    if ( user === commentor) {
         try {
-
+            console.log("im here")
             const blog = Blog.findById(comment.blog);
             let arr = blog.comments;
             for (var i = 0; i < arr.length; i++) {
