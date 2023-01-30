@@ -23,8 +23,8 @@ BlogRouter.post("/",authenticate.admin, multer.single("image"), async (req, res)
       cloudinary_id: result.public_id
 
     })
-    await blog.save();
-    res.json(blog);
+    let nblog=await blog.save();
+    res.json(nblog);
 
   } catch (err) {
     console.log(err);

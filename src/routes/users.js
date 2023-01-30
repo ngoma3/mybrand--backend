@@ -8,7 +8,6 @@ const UserRouter = express.Router();
 
 UserRouter.post("/signup", async (req, res) => {
     let username = req.body.username;
-    let email = req.body.email;
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(req.body.password, salt);
 
@@ -38,6 +37,7 @@ UserRouter.post("/signup", async (req, res) => {
                 });
                 res.json({
                     message: 'SignUp successfuly',
+                    id: newUser._id,
                     token
                 })
             
@@ -161,8 +161,6 @@ UserRouter.post("/admin/login", async (req, res) => {
     var password = req.body.password;
     var un = process.env.USER_NAME;
     var pw = process.env.PASSWORD_;
-    console.log(username, password);
-    console.log(process.env.USER_NAME, process.env.PASSWORD_);
     if (username === un && password === pw) {
         let token = jwt.sign({
             username: username
