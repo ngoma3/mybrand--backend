@@ -1,23 +1,38 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
-import app from "../src/app"
+import app from "../src/test"
+// import mongoose from "mongoose";
 
 chai.use(chaiHttp);
 const { expect, assert } = chai;
 let token;
 let msgId;
 let adminToken;
+let userId;
+
+// before(async () => {
+//     mongoose.set('strictQuery', true);
+//     try {
+//       await mongoose.connect(process.env.MONGO_URL_TESTS);
+//       console.log("Using Tests Database");
+//     } catch (error) {
+//       console.error(error);
+//     }
+// });
+
+
 describe("All Messages API EndPoints",()=>{
     describe('User login', () => {
         it('should return the expected response',(done) => {
            chai.request(app)
             .post('/auth/login')
-            .send({ username: 'ng', password: 'nn' })
+            .send({ username: 'dev', password: 'dev' })
             .end((err, res) => {
               assert.isNull(err, 'Error should be null');
               assert.equal(res.status, 200, 'Status code should be 200');
               assert.isObject(res.body, 'Response body should be an Array');
               token=res.body.token;
+              userId=res.body._id;
               done();
             });
         });

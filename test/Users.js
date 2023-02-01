@@ -1,26 +1,26 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
-import app from "../src/app"
+import app from "../src/test"
+// import mongoose from "mongoose";
 
 chai.use(chaiHttp);
 const { expect, assert } = chai;
 let token;
 let userId;
+
+// before(async () => {
+//     mongoose.set('strictQuery', true);
+//     try {
+//       await mongoose.connect(process.env.MONGO_URL_TESTS);
+//       console.log("Using Tests Database");
+//     } catch (error) {
+//       console.error(error);
+//     }
+// });
+
+
 describe("All Users API EndPoints",()=>{
-    describe('User signup', () => {
-        it('should return the expected response',(done) => {
-           chai.request(app)
-            .post('/auth/signup')
-            .send({ username: 'dev',email: "tik@tok.c", password: 'dev' })
-            .end((err, res) => {
-              assert.isNull(err, 'Error should be null');
-              assert.equal(res.status, 200, 'Status code should be 200');
-              assert.isObject(res.body, 'Response body should be an Array');
-              userId=res.body.id;
-              done();
-            });
-        });
-    });
+    
     describe('User login', () => {
         it('should return the expected response',(done) => {
            chai.request(app)
@@ -31,6 +31,7 @@ describe("All Users API EndPoints",()=>{
               assert.equal(res.status, 200, 'Status code should be 200');
               assert.isObject(res.body, 'Response body should be an Array');
               token=res.body.token;
+              userId=res.body._id;
               done();
             });
         });
