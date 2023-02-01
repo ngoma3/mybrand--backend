@@ -66,9 +66,19 @@ UserRouter.get("/", authenticate.admin, async (req, res) => {
 //delete a message
 UserRouter.delete("/account/:id", authenticate.admin||authenticate.authenticate, async (req, res) => {
     try {
-        let user = await User.findById(req.params.id);
-        await user.remove();
-        res.status(200).send()
+        User.findOne({
+            $or: [{
+                _id: req.params.id
+            }]
+        })
+        .then(async(user) => {
+            if (user) {
+                await user.remove();
+                res.json({
+                    message: 'User already exist'
+                })
+            }
+        });
     } catch {
         res.status(404)
         res.send({
@@ -78,13 +88,12 @@ UserRouter.delete("/account/:id", authenticate.admin||authenticate.authenticate,
 })
 UserRouter.put("/profile/:id", authenticate.authenticate, async (req, res) => {
     try {
-        let userId = req.params.id;
-        let user = await User.findById(userId);
+        let user = await User.findById(req.params.id);
         let username = req.body.username || user.username;
         let email = req.body.email || user.email;
         let password = req.body.password || user.password;
         user = await User.findOneAndUpdate({
-            _id: userId
+            _id: req.params.id
         }, {
             $set: {
                 username: username,

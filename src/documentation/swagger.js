@@ -423,17 +423,15 @@ module.exports = {
             },
             responses: {
               200: {
-                description: 'successfully',
+                description: 'Comment posted successfully',
               },
               401: {
                 description: 'Not Authorized',
               },
               404: {
-                description: 'Article doesn\'t exist!',
+                description: 'Not found',
               },
-              500: {
-                  description: 'Internal Server Error'
-              }
+              
             },
           }
         },

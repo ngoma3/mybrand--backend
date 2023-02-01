@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.71% </span>
+                <span class="strong">87.82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>100/114</span>
+                <span class='fraction'>101/115</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.1% </span>
+                <span class="strong">68.35% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>51/76</span>
+                <span class='fraction'>54/79</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>36/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.41% </span>
+                <span class="strong">85.18% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>65/77</span>
+                <span class='fraction'>69/81</span>
             </div>
         
             
@@ -242,8 +242,17 @@
 <a name='L177'></a><a href='#L177'>177</a>
 <a name='L178'></a><a href='#L178'>178</a>
 <a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">701x</span>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">720x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -308,7 +317,17 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -317,12 +336,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -489,9 +507,19 @@ UserRouter.get("/", authenticate.admin, async (req, res) =&gt; {
 //delete a message
 UserRouter.delete("/account/:id", authenticate.admin||<span class="branch-1 cbranch-no" title="branch not covered" >authenticate.authenticate,</span> async (req, res) =&gt; {
     try {
-        let user = await User.findById(req.params.id);
-        await user.remove();
-        res.status(200).send()<span class="branch-3 cbranch-no" title="branch not covered" ></span>
+        User.findOne({
+            $or: [{
+                _id: req.params.id
+            }]
+        })
+        .then(async(user<span class="missing-if-branch" title="if path not taken" >I</span>) =&gt; {
+            if (user) {
+                await user.remove();
+                res.json({
+                    message: 'User already exist'
+                })
+            }
+        });
     } catch {
 <span class="cstat-no" title="statement not covered" >        res.status(404)</span>
 <span class="cstat-no" title="statement not covered" >        res.send({</span>
@@ -501,13 +529,12 @@ UserRouter.delete("/account/:id", authenticate.admin||<span class="branch-1 cbra
 })
 UserRouter.put("/profile/:id", authenticate.authenticate, async (req, res) =&gt; {
     try {
-        let userId = req.params.id;
-        let user = await User.findById(userId);
+        let user = await User.findById(req.params.id);
         let username = req.body.username || user.username;
         let email = req.body.email || user.email;
         let password = req.body.password || <span class="branch-1 cbranch-no" title="branch not covered" >user.password;</span>
         user = await User.findOneAndUpdate({
-            _id: userId
+            _id: req.params.id
         }, {
             $set: {
                 username: username,
@@ -607,7 +634,7 @@ module.exports = UserRouter;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-01T06:30:28.032Z
+                at 2023-02-01T12:19:20.760Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
