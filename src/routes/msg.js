@@ -7,12 +7,11 @@ const MsgRouter = express.Router();
 // Configuration
 
 MsgRouter.post("/",authenticate.authenticate, async(req,res)=>{
-  try{
-    
+  try{ 
     let msg = new Msg({
       name: req.body.name,
+      content: req.body.content,
       email: req.body.email,
-      content: req.body.content
     })
     let newMsg=await msg.save();
     res.json(newMsg);

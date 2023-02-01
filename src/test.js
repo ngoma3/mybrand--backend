@@ -24,8 +24,8 @@ mongoose.set('strictQuery', true);
 
 async function connect() {
   try {
-    await mongoose.connect(process.env.MONGO_URL_TESTS);
-    console.log("connected");
+    await mongoose.connect(process.env.MONGO_URL_TESTS)
+    .then(console.log("database connected"));
   } catch (error) {
     console.error(error);
   }

@@ -10,17 +10,17 @@ const BlogRouter = express.Router();
 
 BlogRouter.post("/",authenticate.admin, multer.single("image"), async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.file.path, {
+    const cloudImage = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${Date.now()}`,
-      resource_type: "auto",
-      folder: "capstone"
+      folder: "capstone",
+      resource_type: "auto"
     });
     let blog = new Blog({
       article: req.body.article,
-      image: result.secure_url,
+      image: cloudImage.secure_url,
+      cloudinary_id: cloudImage.public_id,
       content: req.body.content,
-      category: req.body.category,
-      cloudinary_id: result.public_id
+      category: req.body.category
 
     })
     let nblog=await blog.save();
@@ -83,9 +83,9 @@ BlogRouter.delete("/:id",authenticate.admin, async (req, res) => {
     let blog = await Blog.findById(req.params.id);
     await cloudinary.uploader.destroy(blog.cloudinary_id);
     const arr = blog.comments;
-    for (var i = 0; i < arr.length; i++) {
-      const comment = await Comment.findById(arr[i]);
-      comment.remove()
+    for (var j = 0; j < arr.length; j++) {
+      let cmt = await Comment.findById(arr[j]);
+      cmt.remove()
     }
     await blog.remove();
     res.send({
