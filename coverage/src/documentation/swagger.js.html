@@ -575,51 +575,7 @@
 <a name='L510'></a><a href='#L510'>510</a>
 <a name='L511'></a><a href='#L511'>511</a>
 <a name='L512'></a><a href='#L512'>512</a>
-<a name='L513'></a><a href='#L513'>513</a>
-<a name='L514'></a><a href='#L514'>514</a>
-<a name='L515'></a><a href='#L515'>515</a>
-<a name='L516'></a><a href='#L516'>516</a>
-<a name='L517'></a><a href='#L517'>517</a>
-<a name='L518'></a><a href='#L518'>518</a>
-<a name='L519'></a><a href='#L519'>519</a>
-<a name='L520'></a><a href='#L520'>520</a>
-<a name='L521'></a><a href='#L521'>521</a>
-<a name='L522'></a><a href='#L522'>522</a>
-<a name='L523'></a><a href='#L523'>523</a>
-<a name='L524'></a><a href='#L524'>524</a>
-<a name='L525'></a><a href='#L525'>525</a>
-<a name='L526'></a><a href='#L526'>526</a>
-<a name='L527'></a><a href='#L527'>527</a>
-<a name='L528'></a><a href='#L528'>528</a>
-<a name='L529'></a><a href='#L529'>529</a>
-<a name='L530'></a><a href='#L530'>530</a>
-<a name='L531'></a><a href='#L531'>531</a>
-<a name='L532'></a><a href='#L532'>532</a>
-<a name='L533'></a><a href='#L533'>533</a>
-<a name='L534'></a><a href='#L534'>534</a>
-<a name='L535'></a><a href='#L535'>535</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L513'></a><a href='#L513'>513</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1221,16 +1177,19 @@
               },
             },
             Users: {
-              type: "object", // data type
+              type: "object", 
               properties: {
                 username: {
-                  type: "string", // data-type
+                  type: "string", 
+                  example: "chris",
                 },
                 email: {
-                  type: "string", // data-type
+                  type: "string", 
+                  example: "ngomachrs@gmail.com",
                 },
                 password: {
-                  type: "string", // data type
+                  type: "string", 
+                  example: "123",
                 },
               },
             },
@@ -1315,9 +1274,6 @@
             requestBody: {
               content: {
                 'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Users',
-                  },
                   example: {
                     username:"ngoma",
                     password:"ngoma"
@@ -1336,21 +1292,6 @@
             },
             }
         },
-      //   '/auth/signout': {
-      //     post: {
-      //     tags: ['login'],
-      //     summary: 'Logout',
-      //     security: [{bearerAuth: []}],
-      //     responses: {
-      //       200: {
-      //         description: 'logged out successfully',
-      //       },
-      //       404: {
-      //         description: 'Not found',
-      //       },
-      //     },
-      //     }
-      // },
         '/auth':{
           get:{
             tags:['Users'],
@@ -1377,18 +1318,17 @@
               ],
               requestBody: {
                 content: {
-                  'multipart/form-data': {
+                  'application/json': {
                     schema: {
                       $ref: '#/components/schemas/Users',
                     },
-                  
                   },
                 },
                 
               },
               responses: {
                 200: {
-                  description: 'successfully',
+                  description: 'profile updated successfully',
                 },
                 401: {
                   description: 'User Not Authorized',
@@ -1396,13 +1336,10 @@
                 404: {
                   description: 'Not found',
                 },
-                500: {
-                    description: 'Internal Server Error'
-                }
               },
             }
           },
-          '/auth/{id}':{
+          '/auth/account/{id}':{
             delete:{
               tags:['Users'],
               summary:'remove User',
@@ -1422,7 +1359,7 @@
                   description: 'User Not Authorized',
                 },
                 404: {
-                  description: 'Article doesn\'t exist!',
+                  description: 'Not found',
                 },
               
               },
@@ -1526,8 +1463,8 @@
         '/blogs/{id}':{
           delete:{
             tags:['Blogs'],
-            summary:'Delete blog article',
             security: [{bearerAuth: []}],
+            summary:'Delete blog article',
             parameters: [
               {
                  "in": "path",
@@ -1597,11 +1534,8 @@
             requestBody: {
               content: {
                 'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Message',
-                  },
                   example: {
-                    name:"ngoma",
+                    name:"chris",
                     email:"n@g.com",
                     content:"message"
                   },
@@ -1672,7 +1606,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-01T00:30:59.588Z
+                at 2023-02-01T06:30:28.032Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

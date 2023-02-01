@@ -77,11 +77,11 @@ describe("All Users API EndPoints",()=>{
         });
         it('DELETE a User, require admin/user Authorization',(done) => { 
             chai.request(app)
-             .delete('/auth/'+userId)
+             .delete('/auth/account/'+userId)
              .set('Authorization', `Bearer ${adminToken}`)
              .end((err, res) => {
                assert.isNull(err, 'Error should be null');
-               assert.equal(res.status, 204, 'Status code should be 200');
+               assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
                done();
             });

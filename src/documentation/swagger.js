@@ -88,16 +88,19 @@ module.exports = {
               },
             },
             Users: {
-              type: "object", // data type
+              type: "object", 
               properties: {
                 username: {
-                  type: "string", // data-type
+                  type: "string", 
+                  example: "chris",
                 },
                 email: {
-                  type: "string", // data-type
+                  type: "string", 
+                  example: "ngomachrs@gmail.com",
                 },
                 password: {
-                  type: "string", // data type
+                  type: "string", 
+                  example: "123",
                 },
               },
             },
@@ -182,9 +185,6 @@ module.exports = {
             requestBody: {
               content: {
                 'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Users',
-                  },
                   example: {
                     username:"ngoma",
                     password:"ngoma"
@@ -203,21 +203,6 @@ module.exports = {
             },
             }
         },
-      //   '/auth/signout': {
-      //     post: {
-      //     tags: ['login'],
-      //     summary: 'Logout',
-      //     security: [{bearerAuth: []}],
-      //     responses: {
-      //       200: {
-      //         description: 'logged out successfully',
-      //       },
-      //       404: {
-      //         description: 'Not found',
-      //       },
-      //     },
-      //     }
-      // },
         '/auth':{
           get:{
             tags:['Users'],
@@ -244,18 +229,17 @@ module.exports = {
               ],
               requestBody: {
                 content: {
-                  'multipart/form-data': {
+                  'application/json': {
                     schema: {
                       $ref: '#/components/schemas/Users',
                     },
-                  
                   },
                 },
                 
               },
               responses: {
                 200: {
-                  description: 'successfully',
+                  description: 'profile updated successfully',
                 },
                 401: {
                   description: 'User Not Authorized',
@@ -263,13 +247,10 @@ module.exports = {
                 404: {
                   description: 'Not found',
                 },
-                500: {
-                    description: 'Internal Server Error'
-                }
               },
             }
           },
-          '/auth/{id}':{
+          '/auth/account/{id}':{
             delete:{
               tags:['Users'],
               summary:'remove User',
@@ -289,7 +270,7 @@ module.exports = {
                   description: 'User Not Authorized',
                 },
                 404: {
-                  description: 'Article doesn\'t exist!',
+                  description: 'Not found',
                 },
               
               },
@@ -393,8 +374,8 @@ module.exports = {
         '/blogs/{id}':{
           delete:{
             tags:['Blogs'],
-            summary:'Delete blog article',
             security: [{bearerAuth: []}],
+            summary:'Delete blog article',
             parameters: [
               {
                  "in": "path",
@@ -464,11 +445,8 @@ module.exports = {
             requestBody: {
               content: {
                 'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Message',
-                  },
                   example: {
-                    name:"ngoma",
+                    name:"chris",
                     email:"n@g.com",
                     content:"message"
                   },

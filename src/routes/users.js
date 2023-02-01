@@ -51,23 +51,24 @@ UserRouter.post("/signup", async (req, res) => {
 
 UserRouter.get("/", authenticate.admin, async (req, res) => {
     try {
-        const query = await User.find()
-        res.send(query)
+        let users;
+        users = await User.find()
+        res.send(users)
     } catch {
         res.status(404)
         res.send({
-            error: "Postman not found"
+            error: "Not found"
         })
     }
 
 });
 
 //delete a message
-UserRouter.delete("/:id", authenticate.admin||authenticate.authenticate, async (req, res) => {
+UserRouter.delete("/account/:id", authenticate.admin||authenticate.authenticate, async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
         await user.remove();
-        res.status(204).send()
+        res.status(200).send()
     } catch {
         res.status(404)
         res.send({
@@ -77,15 +78,13 @@ UserRouter.delete("/:id", authenticate.admin||authenticate.authenticate, async (
 })
 UserRouter.put("/profile/:id", authenticate.authenticate, async (req, res) => {
     try {
-        const id = req.params.id;
-        let user = await User.findById(id);
-
+        let userId = req.params.id;
+        let user = await User.findById(userId);
         let username = req.body.username || user.username;
         let email = req.body.email || user.email;
         let password = req.body.password || user.password;
-
         user = await User.findOneAndUpdate({
-            _id: id
+            _id: userId
         }, {
             $set: {
                 username: username,
@@ -165,7 +164,7 @@ UserRouter.post("/admin/login", async (req, res) => {
     if (username === un && password === pw) {
         let token = jwt.sign({
             username: username
-        }, "AzQ,PI)0(", {
+        }, "ngoma)(", {
             expiresIn: '1h'
         })
         res.json({
