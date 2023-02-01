@@ -10,21 +10,24 @@ const BlogRouter = express.Router();
 
 BlogRouter.post("/",authenticate.admin, multer.single("image"), async (req, res) => {
   try {
-    const cloudImage = await cloudinary.uploader.upload(req.file.path, {
+    await cloudinary.uploader.upload(req.file.path, {
       public_id: `${Date.now()}`,
       folder: "capstone",
       resource_type: "auto"
-    });
-    let blog = new Blog({
-      article: req.body.article,
-      image: cloudImage.secure_url,
-      cloudinary_id: cloudImage.public_id,
-      content: req.body.content,
-      category: req.body.category
-
     })
-    let nblog=await blog.save();
-    res.json(nblog);
+    .then(async(result)=>{
+      let blog = new Blog({
+        article: req.body.article,
+        image: result.secure_url,
+        cloudinary_id: result.public_id,
+        content: req.body.content,
+        category: req.body.category
+  
+      })
+      let nblog=await blog.save();
+      res.json(nblog);
+    });
+    
 
   } catch (err) {
     console.log(err);
@@ -34,8 +37,10 @@ BlogRouter.post("/",authenticate.admin, multer.single("image"), async (req, res)
 
 BlogRouter.get("/", async (req, res) => {
   try {
-    const query = await Blog.find()
+  await Blog.find()
+  .then(async(query)=>{
     res.send(query)
+  }) ;
   } catch {
     res.status(404)
     res.send({
@@ -114,8 +119,10 @@ BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) => {
     if(req.file || req.body.article){
       const arr = blog.comments;
       for (var i = 0; i < arr.length; i++) {
-        const comment = await Comment.findById(arr[i]);
-        comment.remove()
+        await Comment.findById(arr[i])
+        .then(async(comment)=>{
+          comment.remove()
+        });
       }
     }
     let article = req.body.article || blog.article;

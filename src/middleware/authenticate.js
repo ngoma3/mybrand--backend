@@ -15,12 +15,12 @@ const authenticate = (req,res,next) =>{
 }
 const admin = (req,res,next) =>{
     try{
-        const token = req.headers.authorization.split(" ")[1]
-        const decode= jwt.verify(token, "ngoma)(")
-        req.user = decode
+        let tkn = req.headers.authorization.split(" ")[1]
+        let decoded= jwt.verify(tkn, "ngoma)(")
+        req.user = decoded
         next()
-    }catch(error){
-        res.json({
+    }catch(err){
+        res.send({
             message: "Authentication Failed!"
         })
     }
