@@ -24,7 +24,7 @@ mongoose.set('strictQuery', true);
 
 async function connect() {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URL_TESTS);
     console.log("connected");
   } catch (error) {
     console.error(error);
@@ -37,8 +37,8 @@ app.use("/auth", UserRouter);
 app.use("/comments", CommentRouter);
 connect();
 
-app.listen(port, () =>{
-  console.log(`server started on port `+ port);
+app.listen(5000, () =>{
+  console.log(`server started on port 5000`);
 });
 
 module.exports = app;

@@ -2,13 +2,13 @@ import express from "express";
 import Comment from "../model/Comment";
 import Blog from "../model/Blog";
 import authenticate from "../middleware/authenticate";
-
 const CommentRouter = express.Router();
 
 
 // Configuration
 
 CommentRouter.post("/:id", authenticate.authenticate, async (req, res) => {
+    
     try {
         const comment = new Comment({
             blog: req.params.id,
@@ -16,13 +16,14 @@ CommentRouter.post("/:id", authenticate.authenticate, async (req, res) => {
             comment: req.body.comment
         });
         let newComment =await comment.save();
-        await Blog.updateOne({
+        let updatedblo = await Blog.updateOne({
             _id: comment.blog
         }, {
             $push: {
                 comments: comment._id
             }
         })
+        
         res.send(newComment);
     } catch (err) {
         console.log(err);
@@ -31,24 +32,26 @@ CommentRouter.post("/:id", authenticate.authenticate, async (req, res) => {
 });
 //delete a message
 CommentRouter.delete("/:id", authenticate.authenticate, async (req, res) => {
+ 
     const id = req.params.id;
     const comment = await Comment.findById(id);
     const user=req.user._id ;
-    const commentor = comment.user;
-    console.log(user,...commentor);
+    const commentor = String(comment.user);
+    const blogId= String(comment.blog);
     if ( user === commentor) {
         try {
-            console.log("im here")
-            const blog = Blog.findById(comment.blog);
+            // 
+            const blog =await Blog.findById(blogId); 
             let arr = blog.comments;
             for (var i = 0; i < arr.length; i++) {
-                if (arr[i] === id) {
+                let a= String(arr[i])
+                if (a===id) {
                     arr.splice(i, 1);
                     i--;
                 }
             }
-            await Blog.findOneAndUpdate({
-                _id: comment.blog
+            let mm=await Blog.updateOne({
+                _id: blogId
             }, {
                 $set: {
                     comments: arr
@@ -57,9 +60,9 @@ CommentRouter.delete("/:id", authenticate.authenticate, async (req, res) => {
                 new: true
             })
             await comment.remove();
-            res.success({
-                message: "deleted successfully"
-            });
+            res.send({
+                message: 'Comment deleted successfuly'
+              })
         } catch {
             res.status(404)
             res.send({
