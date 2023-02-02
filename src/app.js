@@ -30,7 +30,9 @@ async function connect() {
     console.error(error);
   }
 }
-app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(specs));
+app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(specs,{
+  cors: true
+}));
 app.use("/messages", MsgRouter);
 app.use("/blogs", BlogRouter);
 app.use("/auth", UserRouter);
