@@ -10,7 +10,7 @@ const BlogRouter = express.Router();
 
 BlogRouter.post("/",authenticate.admin, multer.single("image"), async (req, res) => {
   try {
-    await cloudinary.uploader.upload(req.file.path, {
+    await cloudinary.uploader.upload(req.file.buffer, {
       public_id: `${Date.now()}`,
       folder: "capstone",
       resource_type: "auto"
