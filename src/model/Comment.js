@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+const date = new Date();
+const options = { year: 'numeric', month: 'short', day: 'numeric' };
+const formatedDate = date.toLocaleDateString('en-US', options);
 const schema= mongoose.Schema({
    blog:{
         type:mongoose.Schema.Types.ObjectId,
@@ -12,7 +15,7 @@ const schema= mongoose.Schema({
     },
     date:{
      type: Date,
-     default: Date.now
+     default: formatedDate
     }
 });
 export default mongoose.model("Comments", schema);

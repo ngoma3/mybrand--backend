@@ -67,6 +67,7 @@ BlogRouter.get("/:id", async (req, res) => {
     let blog2={
       _id: blog._id,
       article: blog.article,
+      category: blog.category,
       image: blog.image,
       content: blog.content,
       cloudinary_id: blog.cloudinary_id,
@@ -103,13 +104,16 @@ BlogRouter.delete("/:id",authenticate.admin, async (req, res) => {
     })
   }
 })
-BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) => {
+BlogRouter.put("/blog/:id", authenticate.admin ,  multer.single("image"), async (req, res) => {
   try {
     const id = req.params.id;
     let blog = await Blog.findById(id);
     let result = {};
 
     if (req.file) {
+      if(blog.cloudinary_id !== null){
+        await cloudinary.uploader.destroy(blog.cloudinary_id);
+      }
       result = await cloudinary.uploader.upload(req.file.path, {
         public_id: `${Date.now()}`,
         resource_type: "auto",
@@ -145,7 +149,7 @@ BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) => {
       new: true
     });
     res.send({
-      Message: "Update successfuly"
+      message: "Updated successfuly"
     });
 
   } catch (err) {

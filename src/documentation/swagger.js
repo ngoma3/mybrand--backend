@@ -14,8 +14,9 @@ module.exports = {
         },
         servers: [
             {
-                url:"http://localhost:3000",
-                description: "Local server"
+                url:"https://real-pear-squid-shoe.cyclic.app/",
+                description: "Local server",
+                
             }
         ],
         
@@ -185,6 +186,9 @@ module.exports = {
             requestBody: {
               content: {
                 'application/json': {
+                  schema: {
+                      $ref: '#/components/schemas/Users',
+                    },
                   example: {
                     username:"ngoma",
                     password:"ngoma"
@@ -443,6 +447,9 @@ module.exports = {
             requestBody: {
               content: {
                 'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Comment',
+                  },
                   example: {
                     name:"chris",
                     email:"n@g.com",
