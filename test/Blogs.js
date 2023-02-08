@@ -77,6 +77,9 @@ describe("All Blogs API EndPoints",()=>{
                assert.isNull(err, 'Error should be null');
                assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
+               expect(res.body).to.have.property('article').equal('Test');
+               expect(res.body).to.have.property('category').equal('Test');
+               expect(res.body).to.have.property('content').equal('Test');
                blogId=res.body._id;
                done();
             });
@@ -92,6 +95,7 @@ describe("All Blogs API EndPoints",()=>{
                assert.isNull(err, 'Error should be null');
                assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
+               expect(res.body).to.have.property('article').equal('Test');
                blogId2 =res.body._id;
                done();
             });
@@ -103,7 +107,9 @@ describe("All Blogs API EndPoints",()=>{
               assert.isNull(err, 'Error should be null');
               assert.equal(res.status, 200, 'Status code should be 200');
               assert.isObject(res.body, 'Response body should be an Object');
-              
+              expect(res.body).to.have.property('article');
+              expect(res.body).to.have.property('category');
+              expect(res.body).to.have.property('content');
               done();
             });
         });
@@ -117,6 +123,7 @@ describe("All Blogs API EndPoints",()=>{
                assert.isNull(err, 'Error should be null');
                assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
+               expect(res.body).to.have.property('message').equal('Updated successfuly');
                done();
             });
         });
@@ -128,6 +135,7 @@ describe("All Blogs API EndPoints",()=>{
              assert.isNull(err, 'Error should be null');
              assert.equal(res.status, 200, 'Status code should be 200');
              assert.isObject(res.body, 'Response body should be an Array');
+             expect(res.body).to.have.property('token');
              done();
            });
        });
@@ -140,6 +148,7 @@ describe("All Blogs API EndPoints",()=>{
                assert.isNull(err, 'Error should be null');
                assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
+               expect(res.body).to.have.property('token');
                userToken=res.body.token;
                done();
              });
@@ -164,6 +173,8 @@ describe("All Blogs API EndPoints",()=>{
                assert.isNull(err, 'Error should be null');
                assert.equal(res.status, 200, 'Status code should be 200');
                assert.isObject(res.body, 'Response body should be an Object');
+               expect(res.body).to.have.property('_id');
+               expect(res.body).to.have.property('comment');
                commentId = res.body._id;
                done();
             });

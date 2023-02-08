@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.41% </span>
+                <span class="strong">79.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>108/136</span>
+                <span class='fraction'>111/140</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.58% </span>
+                <span class="strong">64.64% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>62/96</span>
+                <span class='fraction'>64/99</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.22% </span>
+                <span class="strong">79.74% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>61/77</span>
+                <span class='fraction'>63/79</span>
             </div>
         
             
@@ -222,8 +222,12 @@
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
 <a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">843x</span>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">864x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -296,6 +300,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -327,13 +332,16 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -450,6 +458,7 @@ BlogRouter.get("/:id", async (req, res) =&gt; {
     let blog2={
       _id: blog._id,
       article: blog.article,
+      category: blog.category,
       image: blog.image,
       content: blog.content,
       cloudinary_id: blog.cloudinary_id,
@@ -486,13 +495,16 @@ BlogRouter.delete("/:id",authenticate.admin, async (req, res) =&gt; {
     })
   }
 })
-BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) =&gt; {
+BlogRouter.put("/blog/:id", authenticate.admin ,  multer.single("image"), async (req, res) =&gt; {
   try {
     const id = req.params.id;
     let blog = await Blog.findById(id);
     let result = {}<span class="missing-if-branch" title="if path not taken" >I</span>;
 &nbsp;
-    if (req.file) {
+    if (req.file<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>) {</span>
+      if(blog.cloudinary_id !== null){
+        await cloudinary.uploader.destroy(blog.cloudinary_id);
+      }
       result<span class="missing-if-branch" title="if path not taken" >I</span> = await cloudinary.uploader.upload(req.file.path, {
         public_id: `${Date.now()}`,
         resource_type: "auto",
@@ -505,7 +517,7 @@ BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) =&gt; {
         await Comment.findById(arr[i])
         .then<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(<span class="fstat-no" title="function not covered" >a</span>sync(c</span>omment<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >)=&gt;{</span></span></span>
 <span class="cstat-no" title="statement not covered" >          comment.remove()<span class="cstat-no" title="statement not covered" ></span></span>
-        }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >)<span class="branch-5 cbranch-no" title="branch not covered" >;</span></span></span>
+        }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >)<span class="branch-6 cbranch-no" title="branch not covered" >;</span></span></span>
       }
     }
     let article = req.body.article || blog.article;
@@ -528,8 +540,8 @@ BlogRouter.put("/blog/:id", multer.single("image"), async (req, res) =&gt; {
       new: true
     });
     res.send({
-      Message: "Update successfuly"
-    });<span class="branch-8 cbranch-no" title="branch not covered" ></span>
+      message: "Updated successfuly"
+    });<span class="branch-9 cbranch-no" title="branch not covered" ></span>
 &nbsp;
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(404)</span>
@@ -547,7 +559,7 @@ module.exports = BlogRouter;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-01T13:48:25.851Z
+                at 2023-02-08T20:01:21.965Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
