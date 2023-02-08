@@ -14,8 +14,7 @@ module.exports = {
         },
         servers: [
             {
-                url:"https://real-pear-squid-shoe.cyclic.app",
-                description: "Local server"
+                
             }
         ],
         
