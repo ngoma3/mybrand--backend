@@ -117,7 +117,8 @@ describe("All Blogs API EndPoints",()=>{
             chai.request(app)
              .put('/blogs/blog/'+blogId)
              .set('Authorization', `Bearer ${token}`)
-             .attach('image', fs.readFileSync(path.join(__dirname, 'med1.jpg')), 'med1.jpg')
+             .attach('image', fs.readFileSync(path.join(__dirname, 'r1.png')), 'r1.png')
+             .field('article', 'updated')
              .field('content', 'updated')
              .end((err, res) => {
                assert.isNull(err, 'Error should be null');

@@ -64,7 +64,7 @@ UserRouter.get("/", authenticate.admin, async (req, res) => {
 });
 
 //delete a message
-UserRouter.delete("/account/:id", authenticate.admin||authenticate.authenticate, async (req, res) => {
+UserRouter.delete("/account/:id", authenticate.admin, async (req, res) => {
     try {
         User.findOne({
             $or: [{

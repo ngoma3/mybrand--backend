@@ -6,7 +6,7 @@ const MsgRouter = express.Router();
 
 // Configuration
 
-MsgRouter.post("/",authenticate.authenticate, async(req,res)=>{
+MsgRouter.post("/", async(req,res)=>{
   const msg = new Msg({
     name: req.body.name,
     content: req.body.content,
