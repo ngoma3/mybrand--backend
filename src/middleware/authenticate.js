@@ -6,6 +6,19 @@ const authenticate = (req, res, next) => {
 const admin = (req, res, next) => {
 tkn(req,res,"ngoma)(",next);
 }
+const either= (req, res, next) => {
+    try{
+         try{
+            authenticate();
+         }catch{
+            admin();
+         }
+    }catch(error) {
+        res.json({
+            message: "Authentication Failed!"
+        }) 
+    }
+}
 
 function tkn(req,res,key,next){
     try {
@@ -22,5 +35,6 @@ function tkn(req,res,key,next){
 
 module.exports = {
     authenticate,
-    admin
+    admin,
+    either
 };
