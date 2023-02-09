@@ -75,7 +75,7 @@ UserRouter.delete("/account/:id", authenticate.admin, async (req, res) => {
             if (user) {
                 await user.remove();
                 res.json({
-                    message: 'User already exist'
+                    message: 'User removed successfuly'
                 })
             }
         });
