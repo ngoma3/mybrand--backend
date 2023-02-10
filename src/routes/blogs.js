@@ -44,7 +44,8 @@ BlogRouter.get("/", async (req, res) => {
   } catch {
     res.status(404)
     res.send({
-      error: 'Postman not found'
+      error: 'Postman not found',
+      message: "it's me"
     })
   }
 
@@ -120,15 +121,15 @@ BlogRouter.put("/blog/:id", authenticate.admin ,  multer.single("image"), async 
         folder: "capstone"
       });
     }
-    if(req.file || req.body.article){
-      const arr = blog.comments;
-      for (var i = 0; i < arr.length; i++) {
-        await Comment.findById(arr[i])
-        .then(async(comment)=>{
-          comment.remove()
-        });
-      }
-    }
+    // if(req.file || req.body.article){
+    //   const arr = blog.comments;
+    //   for (var i = 0; i < arr.length; i++) {
+    //     await Comment.findById(arr[i])
+    //     .then(async(comment)=>{
+    //       comment.remove()
+    //     });
+    //   }
+    // }
     let article = req.body.article || blog.article;
     let image = result.secure_url || blog.image;
     let content = req.body.content || blog.content;
